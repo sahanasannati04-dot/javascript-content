@@ -4,14 +4,33 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Javascript</title>
-    <script>
-        function demo(){
-            document.getElementById("text").innerHTML = "Welcome to Javascript";
-        }
-    </script>
 </head>
 <body>
-    <p id="text">Hello World!</p>
-    <button onclick="demo()"> User Click </button>
+    <div style="text-align:center;margin-top:50px;font-family:Arial,Helvetica,sans-serif">
+        <h1 id="counter" style="font-size:3rem; margin:0 0 20px 0">0</h1>
+        <div>
+            <button id="decrement" type="button" style="padding:10px 18px;margin:0 6px">-5</button>
+            <button id="reset" type="button" style="padding:10px 18px;margin:0 6px">Reset</button>
+            <button id="increment" type="button" style="padding:10px 18px;margin:0 6px">+5</button>
+        </div>
+    </div>
+
+    <script>
+    (function(){
+        const display = document.getElementById('counter');
+        const btnInc = document.getElementById('increment');
+        const btnDec = document.getElementById('decrement');
+        const btnReset = document.getElementById('reset');
+        let value = 0;
+
+        function render() { display.textContent = value; }
+
+        btnInc.addEventListener('click', () => { value += 5; render(); });
+        btnDec.addEventListener('click', () => { value -= 5; render(); });
+        btnReset.addEventListener('click', () => { value = 0; render(); });
+
+        render();
+    })();
+    </script>
 </body>
 </html>
