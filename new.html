@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Calculation</title>
+    <script>
+    document.addEventListener('DOMContentLoaded', () => {
+        const heading = document.createElement('h1');
+        heading.textContent = 'Calculating of two numbers By User Input';
+        heading.style.margin = '12px 0';
+        heading.style.fontSize = '1.25rem';
+        const form = document.getElementById('calcForm');
+        form.parentNode.insertBefore(heading, form);
+    });
+    </script>
+
+</head>
+<body>
+    <form id="calcForm" onsubmit="return false;" style="max-width:360px;">
+        <div>
+            <label for="num1">Number 1</label><br>
+            <input id="num1" type="number" step="any" inputmode="decimal" />
+        </div>
+        <div style="margin-top:8px;">
+            <label for="num2">Number 2</label><br>
+            <input id="num2" type="number" step="any" inputmode="decimal" />
+        </div>
+
+        <div style="margin-top:12px;">
+            <button id="addBtn" type="button">Sum</button>
+            <button id="clearBtn" type="button">Clear</button>
+        </div>
+
+        <div style="margin-top:12px;">
+            <label for="result">Result</label><br>
+            <input id="result" type="text" readonly />
+        </div>
+    </form>
+
+    <script>
+        const num1 = document.getElementById('num1');
+        const num2 = document.getElementById('num2');
+        const result = document.getElementById('result');
+        document.getElementById('addBtn').addEventListener('click', () => {
+            const a = parseFloat(num1.value);
+            const b = parseFloat(num2.value);
+            if (Number.isNaN(a) && Number.isNaN(b)) {
+                result.value = '';
+                return;
+            }
+            // treat empty/invalid as 0
+            result.value = (Number.isNaN(a) ? 0 : a) + (Number.isNaN(b) ? 0 : b);
+        });
+        document.getElementById('clearBtn').addEventListener('click', () => {
+            num1.value = '';
+            num2.value = '';
+            result.value = '';
+            num1.focus();
+        });
+        document.getElementById('subBtn').addEventListener('click', () => {
+            const a = parseFloat(num1.value);
+            const b = parseFloat(num2.value);
+            result.value = (Number.isNaN(a) ? 0 : a) - (Number.isNaN(b) ? 0 : b);
+        });
+
+        document.getElementById('mulBtn').addEventListener('click', () => {
+            const a = parseFloat(num1.value);
+            const b = parseFloat(num2.value);
+            result.value = (Number.isNaN(a) ? 0 : a) * (Number.isNaN(b) ? 0 : b);
+        });
+
+        // Add buttons for subtraction and multiplication in the HTML
+        const subBtn = document.createElement('button');
+        subBtn.id = 'subBtn';
+        subBtn.type = 'button';
+        subBtn.textContent = 'Subtract';
+        document.querySelector('form div:nth-child(3)').appendChild(subBtn);
+
+        const mulBtn = document.createElement('button');
+        mulBtn.id = 'mulBtn';
+        mulBtn.type = 'button';
+        mulBtn.textContent = 'Multiply';
+        document.querySelector('form div:nth-child(3)').appendChild(mulBtn);
+        // create a small display under the result
+        const sumText = document.createElement('div');
+        sumText.id = 'sumText';
+        sumText.style.marginTop = '8px';
+        sumText.style.fontStyle = 'italic';
+        sumText.textContent = '';
+        document.getElementById('result').parentNode.appendChild(sumText);
+
+        // update the message after operations and clear it when cleared
+        document.getElementById('addBtn').addEventListener('click', () => {
+            sumText.textContent = 'as the sum is ' + result.value;
+        });
+        document.getElementById('subBtn').addEventListener('click', () => {
+            sumText.textContent = 'as the sum is ' + result.value;
+        });
+        document.getElementById('mulBtn').addEventListener('click', () => {
+            sumText.textContent = 'as the sum is ' + result.value;
+        });
+        document.getElementById('clearBtn').addEventListener('click', () => {
+            sumText.textContent = '';
+        });
+        // Display the result as the sum is after each operation
+        const displayResultMessage = (operation) => {
+            sumText.textContent = `as the ${operation} is ${result.value}`;
+        };
+
+        document.getElementById('addBtn').addEventListener('click', () => {
+            displayResultMessage('sum');
+        });
+        document.getElementById('subBtn').addEventListener('click', () => {
+            displayResultMessage('difference');
+        });
+        document.getElementById('mulBtn').addEventListener('click', () => {
+            displayResultMessage('product');
+        });
+    </script>
+</body>
+</html>

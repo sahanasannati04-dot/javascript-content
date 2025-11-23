@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Register form</title>
+</head>
+<body>
+    <div class="card">
+        <h1>Registration Form</h1>
+        <form id="regForm" novalidate>
+            <label>
+                Full name
+                <input type="text" name="fullname" id="fullname" required />
+                <small class="error" id="err-fullname"></small>
+            </label>
+
+            <label>
+                Email
+                <input type="email" name="email" id="email" required />
+                <small class="error" id="err-email"></small>
+            </label>
+
+            <label>
+                Password
+                <input type="password" name="password" id="password" required />
+                <small class="error" id="err-password"></small>
+            </label>
+
+            <label>
+                Confirm Password
+                <input type="password" name="confirm" id="confirm" required />
+                <small class="error" id="err-confirm"></small>
+            </label>
+
+            <label>
+                Age
+                <input type="number" name="age" id="age" min="1" />
+                <small class="error" id="err-age"></small>
+            </label>
+
+            <label>
+                Gender
+                <select id="gender" name="gender">
+                    <option value="">Select...</option>
+                    <option>Male</option>
+                    <option>Female</option>
+                    <option>Other</option>
+                </select>
+                <small class="error" id="err-gender"></small>
+            </label>
+
+            <label class="row">
+                <input type="checkbox" id="terms" /> I accept the terms
+                <small class="error" id="err-terms"></small>
+            </label>
+
+            <button type="submit">Register</button>
+        </form>
+
+        <div id="message" aria-live="polite"></div>
+
+        <h2>Registered users</h2>
+        <ul id="usersList"></ul>
+    </div>
+
+    <style>
+        .card{max-width:420px;margin:18px auto;padding:18px;border:1px solid #ddd;border-radius:6px;font-family:system-ui,Segoe UI,Roboto,Arial}
+        h1{margin:0 0 12px;font-size:20px}
+        label{display:block;margin-bottom:10px;font-size:14px}
+        input[type="text"],input[type="email"],input[type="password"],input[type="number"],select{width:100%;padding:8px;border:1px solid #bbb;border-radius:4px;box-sizing:border-box}
+        .row{display:flex;align-items:center;gap:8px}
+        button{padding:10px 14px;border:none;background:#0078d4;color:#fff;border-radius:4px;cursor:pointer}
+        .error{color:#b00020;font-size:12px;height:14px;display:block;margin-top:4px}
+        #message{margin-top:12px;font-weight:600;color:green}
+        ul#usersList{padding-left:18px}
+        li.user{margin:6px 0;padding:8px;border:1px dashed #eee;border-radius:4px;font-size:14px}
+    </style>
+
+    <script>
+        const form = document.getElementById('regForm');
+        const msg = document.getElementById('message');
+        const usersList = document.getElementById('usersList');
+
+        function showError(id, text) {
+            document.getElementById('err-' + id).textContent = text || '';
+        }
+
+        function clearErrors() {
+            ['fullname','email','password','confirm','age','gender','terms'].forEach(id => showError(id, ''));
+            msg.textContent = '';
+        }
+
+        function validEmail(e){ return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(e); }
+
+        function loadUsers(){
+            const users = JSON.parse(localStorage.getItem('users') || '[]');
+            usersList.innerHTML = users.map(u => `<li class="user">${escapeHtml(u.fullname)} — ${escapeHtml(u.email)} — ${u.age||'-'} — ${escapeHtml(u.gender||'-')}</li>`).join('') || '<li>No users yet</li>';
+        }
+
+        function escapeHtml(s){ return String(s).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c])); }
+
+        form.addEventListener('submit', e => {
+            e.preventDefault();
+            clearErrors();
+
+            const fullname = form.fullname.value.trim();
+            const email = form.email.value.trim();
+            const password = form.password.value;
+            const confirm = form.confirm.value;
+            const age = form.age.value ? Number(form.age.value) : null;
+            const gender = form.gender.value;
+            const terms = form.terms.checked;
+
+            let ok = true;
+            if (fullname.length < 2) { showError('fullname','Please enter your full name (min 2 chars)'); ok = false; }
+            if (!validEmail(email)) { showError('email','Enter a valid email'); ok = false; }
+            if (password.length < 6) { showError('password','Password must be at least 6 characters'); ok = false; }
+            if (confirm !== password) { showError('confirm','Passwords do not match'); ok = false; }
+            if (age !== null && (age < 1 || age > 120)) { showError('age','Enter a valid age'); ok = false; }
+            if (!gender) { showError('gender','Please select gender'); ok = false; }
+            if (!terms) { showError('terms','You must accept the terms'); ok = false; }
+
+            if (!ok) return;
+
+            // Save user (do NOT store plaintext passwords in real apps)
+            const users = JSON.parse(localStorage.getItem('users') || '[]');
+            users.push({ fullname, email, age, gender, created: new Date().toISOString() });
+            localStorage.setItem('users', JSON.stringify(users));
+
+            msg.textContent = 'Registration successful!';
+            form.reset();
+            loadUsers();
+        });
+
+        // initialize
+        loadUsers();
+    </script>
+</body>
+</html>
