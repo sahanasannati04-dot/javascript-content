@@ -5,74 +5,13 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Javascript</title>
     <script>
-        document.write("Hello World");
-        console.log("Hello World")
-        //variables in javascript
-        alert("Hello World")
-        var a = 85
-        var a = 50
-        console.log("A value is",a)   
-        /*
-        // local variable
-        */
-       let b = 40
-       const c = 50
-       console.log("B value is", b)
-       console.log("C value is", c)
-       //data types in javascript
-       //1. Primitive data types - to store single value
-       //ex: //number, string, boolean, null, undefined
-       //number, string, boolean, null, undefined
-       //to check the type of the data-typeof()
-       name = "hello"
-       console.log(typeof name)
-       objecta = null
-       console.log(typeof objecta)
-       //hosting:to declare the code at the top
-        // console.log(fullname)
-        //fullname = "hello welcome to javascript"
-
-        //non-primitive:
-        //array, object
-        //array = to store the values which is in sequence and collection of primitive data types
-        data = [1,"one",23,null]
-        console.log(typeof data)
-        //object = instance of the class real world entity
-        products = {
-            title: "laptop",
-            confi: "windows 10",
-            price: "85000",
-            color: "silver"
+        function demo(){
+            document.getElementById("text").innerHTML = "Welcome to Javascript";
         }
-        //console.log(products)
-        //console.log(typeof products)
-        sales = [23000,45000,67000,89000]
-        console.log(sales[2])
-        console.log(sales)
-        //spread and rest operators...
-        console.log(...sales)
-        console.log(sales.slice[-1])
-        a = [23,54,76]
-        console.log(sales)
-        //functions in javascript
-
-        discount = sales.map((a)=> a*0.70)
-        //total = sales - discount
-        //console.log(discount)
-        a = prompt("Enter the value")
-        if(a%2==0){
-            console.log("enter the value is even",a)
-        }
-        category = prompt("Enter the category")
-        if(category=="human"){
-            document.write("You are eligible for vote")
-        }
-        else{
-            document.write("You are not eligible for vote")
-        }
-        
-     </script>
+    </script>
 </head>
 <body>
+    <p id="text">Hello World!</p>
+    <button onclick="demo()"> User Click </button>
 </body>
 </html>
